@@ -1,0 +1,854 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="color-scheme" content="light dark" />
+  <meta name="theme-color" content="#153f36" />
+  <link rel="icon" href="data:," />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,500;6..72,600&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <title>Property Operating Calculator</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      --bg: #f3f5f1;
+      --paper: #ffffff;
+      --paper-soft: #e9eee9;
+      --ink: #10231e;
+      --muted: #52635d;
+      --faint: #71817b;
+      --line: #cbd4ce;
+      --accent: #0f5a49;
+      --accent-strong: #093f34;
+      --accent-soft: #dcece5;
+      --gold: #9a6b24;
+      --gold-soft: #f5ebd9;
+      --danger: #a13d36;
+      --shadow: 0 18px 48px rgba(20, 44, 36, .09);
+      --radius-lg: 22px;
+      --radius-md: 14px;
+      --radius-sm: 8px;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0c1512;
+        --paper: #14201c;
+        --paper-soft: #1a2a25;
+        --ink: #edf4f0;
+        --muted: #b6c4bd;
+        --faint: #91a29a;
+        --line: #33453e;
+        --accent: #72c3aa;
+        --accent-strong: #9addc8;
+        --accent-soft: #183c31;
+        --gold: #dfb66f;
+        --gold-soft: #3a2e1d;
+        --danger: #f09b92;
+        --shadow: 0 20px 52px rgba(0, 0, 0, .26);
+      }
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      min-width: 320px;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: "Public Sans", sans-serif;
+      font-size: 15px;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+    button, input, textarea { font: inherit; }
+    button, a { -webkit-tap-highlight-color: transparent; }
+    a { color: inherit; }
+    .page { width: min(1180px, calc(100% - 36px)); margin: 0 auto; padding: 24px 0 64px; }
+    .topline {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      margin-bottom: 18px;
+    }
+    .brand {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      color: var(--accent-strong);
+    }
+    .lang-toggle {
+      display: inline-flex;
+      padding: 3px;
+      border: 1px solid var(--line);
+      background: var(--paper);
+      border-radius: 999px;
+    }
+    .lang-toggle button {
+      border: 0;
+      min-width: 48px;
+      padding: 7px 10px;
+      border-radius: 999px;
+      color: var(--muted);
+      background: transparent;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: .06em;
+    }
+    .lang-toggle button[aria-pressed="true"] { background: var(--accent); color: #fff; }
+    .hero {
+      position: relative;
+      overflow: hidden;
+      padding: 40px clamp(22px, 5vw, 58px) 34px;
+      background: var(--accent-strong);
+      color: #f4faf7;
+      border-radius: var(--radius-lg) var(--radius-lg) var(--radius-sm) var(--radius-sm);
+      box-shadow: var(--shadow);
+    }
+    .hero::after {
+      content: "";
+      position: absolute;
+      width: 250px;
+      height: 250px;
+      right: -92px;
+      bottom: -144px;
+      border: 1px solid rgba(255,255,255,.18);
+      border-radius: 50%;
+      box-shadow: 0 0 0 42px rgba(255,255,255,.035), 0 0 0 84px rgba(255,255,255,.02);
+      pointer-events: none;
+    }
+    .hero-kicker { margin: 0 0 9px; color: #bed8cf; font-size: 13px; font-weight: 600; }
+    .hero h1 {
+      position: relative;
+      z-index: 1;
+      max-width: 760px;
+      margin: 0;
+      font-family: "Newsreader", serif;
+      font-size: clamp(34px, 6.2vw, 64px);
+      line-height: .98;
+      letter-spacing: -.035em;
+      font-weight: 600;
+    }
+    .property-meta { margin: 17px 0 0; color: #d7e7e1; font-size: 15px; }
+    .contact-strip {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 9px 18px;
+      align-items: center;
+      margin-top: 28px;
+      padding-top: 18px;
+      border-top: 1px solid rgba(255,255,255,.22);
+    }
+    .contact-strip a {
+      color: #f4faf7;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 600;
+    }
+    .contact-strip a:hover { text-decoration: underline; text-underline-offset: 3px; }
+    .contact-strip .dot { width: 3px; height: 3px; border-radius: 50%; background: #93b8aa; }
+
+    .section { margin-top: 28px; }
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+      gap: 20px;
+      margin: 0 2px 13px;
+    }
+    .section-head h2 { margin: 0; font-family: "Newsreader", serif; font-size: 27px; letter-spacing: -.02em; }
+    .section-head p { margin: 0; color: var(--muted); font-size: 13px; text-align: right; }
+    .benchmarks {
+      display: grid;
+      grid-template-columns: 1.3fr repeat(3, 1fr);
+      border: 1px solid var(--line);
+      background: var(--paper);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+    }
+    .benchmark-cell { min-height: 126px; padding: 20px; border-left: 1px solid var(--line); }
+    .benchmark-cell:first-child { border-left: 0; background: var(--paper-soft); }
+    .cell-label { color: var(--muted); font-size: 12px; font-weight: 700; letter-spacing: .02em; }
+    .cell-value { margin-top: 12px; font-family: "Newsreader", serif; font-size: clamp(25px, 3vw, 34px); line-height: 1; letter-spacing: -.025em; }
+    .cell-note { margin-top: 10px; color: var(--faint); font-size: 11px; }
+    .cap-band { display: flex; align-items: end; gap: 10px; margin-top: 11px; }
+    .cap-band div { min-width: 0; }
+    .cap-band strong { display: block; font-family: "Newsreader", serif; font-size: clamp(23px, 3vw, 32px); line-height: 1; font-weight: 600; }
+    .cap-band span { display: block; margin-top: 5px; color: var(--faint); font-size: 10px; text-transform: uppercase; letter-spacing: .08em; }
+
+    .calculator-grid { display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(310px, .8fr); gap: 24px; align-items: start; }
+    .stacks { display: grid; gap: 14px; }
+    details.panel {
+      border: 1px solid var(--line);
+      background: var(--paper);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+    }
+    details.panel[open] { box-shadow: var(--shadow); }
+    summary.panel-summary {
+      list-style: none;
+      display: grid;
+      grid-template-columns: 1fr auto auto;
+      align-items: center;
+      gap: 18px;
+      padding: 21px 22px;
+      cursor: pointer;
+      user-select: none;
+    }
+    summary::-webkit-details-marker { display: none; }
+    .summary-label { color: var(--muted); font-size: 13px; font-weight: 700; }
+    .summary-value { font-family: "Newsreader", serif; font-size: clamp(27px, 4vw, 40px); line-height: 1; letter-spacing: -.03em; }
+    .chevron {
+      display: grid;
+      place-items: center;
+      width: 34px;
+      height: 34px;
+      border: 1px solid var(--line);
+      border-radius: 50%;
+      color: var(--accent);
+      transition: transform .2s ease;
+    }
+    details[open] .chevron { transform: rotate(180deg); }
+    .panel-intro { margin: -2px 22px 18px; color: var(--muted); font-size: 12px; }
+    .field-list { border-top: 1px solid var(--line); }
+    .group-title {
+      padding: 14px 22px 8px;
+      color: var(--accent-strong);
+      background: var(--paper-soft);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: .035em;
+    }
+    .field-row {
+      display: grid;
+      grid-template-columns: minmax(180px, 1fr) minmax(220px, .72fr);
+      gap: 18px;
+      align-items: center;
+      min-height: 76px;
+      padding: 12px 22px;
+      border-top: 1px solid var(--line);
+    }
+    .field-list > .field-row:first-child { border-top: 0; }
+    .field-copy label { display: block; font-weight: 600; }
+    .benchmark-note { margin-top: 3px; color: var(--faint); font-size: 10.5px; }
+    .stepper { display: grid; grid-template-columns: 40px minmax(0,1fr) 40px; border: 1px solid var(--line); border-radius: var(--radius-sm); overflow: hidden; background: var(--bg); }
+    .stepper button {
+      border: 0;
+      background: var(--paper-soft);
+      color: var(--accent-strong);
+      cursor: pointer;
+      font-size: 20px;
+      font-weight: 500;
+    }
+    .stepper button:hover { background: var(--accent-soft); }
+    .stepper input {
+      width: 100%;
+      min-width: 0;
+      border: 0;
+      border-left: 1px solid var(--line);
+      border-right: 1px solid var(--line);
+      border-radius: 0;
+      outline: 0;
+      background: var(--paper);
+      color: var(--ink);
+      text-align: right;
+      padding: 11px 10px;
+      font-variant-numeric: tabular-nums;
+      -moz-appearance: textfield;
+    }
+    .stepper input::-webkit-outer-spin-button, .stepper input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+    .stepper input:focus { box-shadow: inset 0 0 0 2px var(--accent); }
+
+    .results {
+      position: sticky;
+      top: 16px;
+      background: var(--accent-strong);
+      color: #f4faf7;
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+    .results-head { padding: 22px 22px 16px; border-bottom: 1px solid rgba(255,255,255,.17); }
+    .results-head h2 { margin: 0; font-family: "Newsreader", serif; font-size: 28px; }
+    .results-head p { margin: 5px 0 0; color: #bcd4cc; font-size: 12px; }
+    .result-list { padding: 5px 22px; }
+    .result-row { display: flex; justify-content: space-between; gap: 16px; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,.13); }
+    .result-row span { color: #bfd5cd; font-size: 12px; }
+    .result-row strong { text-align: right; font-size: 14px; font-variant-numeric: tabular-nums; }
+    .result-row.noi { display: block; padding: 18px 0; }
+    .result-row.noi span { display: block; }
+    .result-row.noi strong { display: block; margin-top: 4px; font-family: "Newsreader", serif; font-size: 36px; line-height: 1; text-align: left; }
+    .valuation { padding: 21px 22px 24px; background: rgba(255,255,255,.07); }
+    .valuation-label { color: #c4d9d1; font-size: 12px; }
+    .valuation-main { margin-top: 4px; font-family: "Newsreader", serif; font-size: clamp(36px, 5vw, 50px); line-height: 1; letter-spacing: -.035em; }
+    .valuation-range { margin-top: 9px; color: #d7e8e1; font-size: 12px; }
+    .valuation-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 19px; }
+    .valuation-grid div { padding-top: 13px; border-top: 1px solid rgba(255,255,255,.17); }
+    .valuation-grid span { display: block; color: #bcd4cc; font-size: 10px; }
+    .valuation-grid strong { display: block; margin-top: 3px; font-size: 13px; }
+    .reset-button {
+      width: 100%;
+      border: 0;
+      border-top: 1px solid rgba(255,255,255,.17);
+      padding: 13px 18px;
+      background: transparent;
+      color: #d6e7e0;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 600;
+    }
+    .reset-button:hover { background: rgba(255,255,255,.07); }
+
+    .submit-card {
+      display: grid;
+      grid-template-columns: minmax(0,1.05fr) minmax(280px,.95fr);
+      gap: 24px;
+      padding: clamp(22px,4vw,38px);
+      border: 1px solid var(--line);
+      background: var(--paper);
+      border-radius: var(--radius-lg);
+    }
+    .submit-copy h2 { margin: 0; font-family: "Newsreader", serif; font-size: clamp(30px,4vw,43px); line-height: 1.05; letter-spacing: -.025em; }
+    .submit-copy p { max-width: 520px; margin: 12px 0 0; color: var(--muted); }
+    .identity-fields { display: grid; gap: 11px; }
+    .identity-fields label { color: var(--muted); font-size: 12px; font-weight: 600; }
+    .identity-fields input, .identity-fields textarea {
+      width: 100%;
+      margin-top: 5px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-sm);
+      padding: 12px 13px;
+      background: var(--bg);
+      color: var(--ink);
+      outline: none;
+    }
+    .identity-fields input:focus, .identity-fields textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+    .identity-fields textarea { min-height: 88px; resize: vertical; }
+    .send-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 21px; }
+    .action-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-height: 46px;
+      border-radius: 8px;
+      padding: 11px 17px;
+      border: 1px solid var(--accent);
+      background: var(--accent);
+      color: #fff;
+      text-decoration: none;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 13px;
+    }
+    .action-button.secondary { background: transparent; color: var(--accent-strong); border-color: var(--line); }
+    .action-button:hover { filter: brightness(.94); }
+    .send-status { min-height: 22px; margin-top: 12px; color: var(--accent-strong); font-size: 12px; font-weight: 600; }
+    .method-note { margin-top: 14px; color: var(--faint); font-size: 11px; }
+    .footnote { margin: 22px auto 0; max-width: 820px; color: var(--muted); font-size: 11px; text-align: center; }
+    .noscript { margin: 20px auto; max-width: 740px; padding: 16px; border: 1px solid var(--danger); color: var(--danger); }
+
+    @media (max-width: 900px) {
+      .benchmarks { grid-template-columns: 1fr 1fr; }
+      .benchmark-cell { border-top: 1px solid var(--line); }
+      .benchmark-cell:nth-child(odd) { border-left: 0; }
+      .benchmark-cell:first-child, .benchmark-cell:nth-child(2) { border-top: 0; }
+      .calculator-grid { grid-template-columns: 1fr; }
+      .results { position: static; }
+      .submit-card { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 580px) {
+      .page { width: min(100% - 22px, 1180px); padding-top: 12px; }
+      .topline { margin: 0 4px 12px; }
+      .hero { padding: 29px 20px 24px; border-radius: 16px 16px 7px 7px; }
+      .hero h1 { font-size: clamp(34px, 12vw, 48px); }
+      .contact-strip { align-items: flex-start; flex-direction: column; gap: 7px; }
+      .contact-strip .dot { display: none; }
+      .section { margin-top: 22px; }
+      .section-head { align-items: start; flex-direction: column; gap: 2px; }
+      .section-head p { text-align: left; }
+      .benchmarks { grid-template-columns: 1fr; }
+      .benchmark-cell, .benchmark-cell:nth-child(2) { min-height: 0; border-left: 0; border-top: 1px solid var(--line); }
+      .benchmark-cell:first-child { border-top: 0; }
+      .cap-band { justify-content: space-between; }
+      summary.panel-summary { grid-template-columns: 1fr auto; padding: 18px; }
+      .summary-label { grid-column: 1; }
+      .summary-value { grid-column: 1; }
+      .chevron { grid-column: 2; grid-row: 1 / span 2; }
+      .panel-intro { margin-left: 18px; margin-right: 18px; }
+      .group-title { padding-left: 16px; }
+      .field-row { grid-template-columns: 1fr; gap: 9px; padding: 14px 16px 16px; }
+      .stepper { grid-template-columns: 44px minmax(0,1fr) 44px; }
+      .submit-card { padding: 21px 16px; border-radius: 14px; }
+      .send-actions { display: grid; }
+      .action-button { width: 100%; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .chevron { transition: none; }
+    }
+    @media print {
+      body { background: #fff; }
+      .page { width: 100%; padding: 0; }
+      .lang-toggle, .send-actions, .reset-button { display: none !important; }
+      .hero, .results { box-shadow: none; }
+      .results { break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+  <noscript><div class="noscript">This calculator needs JavaScript enabled to calculate the property benchmarks.</div></noscript>
+  <main class="page">
+    <div class="topline">
+      <div class="brand">Embodier</div>
+      <div class="lang-toggle" aria-label="Language">
+        <button type="button" id="lang-en" aria-pressed="true">EN</button>
+        <button type="button" id="lang-es" aria-pressed="false">ES</button>
+      </div>
+    </div>
+
+    <header class="hero">
+      <p class="hero-kicker" data-i18n="heroKicker">Property operating estimate</p>
+      <h1 id="property-title">Resort property</h1>
+      <p class="property-meta" id="property-meta"></p>
+      <nav class="contact-strip" aria-label="Contact">
+        <a href="https://www.embodier.ai" target="_blank" rel="noopener">www.embodier.ai</a>
+        <span class="dot" aria-hidden="true"></span>
+        <a href="mailto:espen@embodier.ai">espen@embodier.ai</a>
+        <span class="dot" aria-hidden="true"></span>
+        <a href="https://wa.me/12397775813" target="_blank" rel="noopener">WhatsApp +1 239-777-5813</a>
+      </nav>
+    </header>
+
+    <section class="section" aria-labelledby="benchmark-title">
+      <div class="section-head">
+        <h2 id="benchmark-title" data-i18n="marketBenchmarks">Market benchmarks</h2>
+        <p id="market-name"></p>
+      </div>
+      <div class="benchmarks">
+        <div class="benchmark-cell">
+          <div class="cell-label" data-i18n="capBand">Market cap-rate band</div>
+          <div class="cap-band">
+            <div><strong id="cap-lo">—</strong><span data-i18n="low">Low</span></div>
+            <div><strong id="cap-base">—</strong><span data-i18n="base">Base</span></div>
+            <div><strong id="cap-hi">—</strong><span data-i18n="high">High</span></div>
+          </div>
+          <div class="cell-note" data-i18n="benchmarkOnly">Market benchmark · read only</div>
+        </div>
+        <div class="benchmark-cell">
+          <div class="cell-label" data-i18n="compPerKey">Comp median / key</div>
+          <div class="cell-value" id="comp-key">—</div>
+          <div class="cell-note" data-i18n="benchmarkOnly">Market benchmark · read only</div>
+        </div>
+        <div class="benchmark-cell">
+          <div class="cell-label" data-i18n="askingPrice">Asking price</div>
+          <div class="cell-value" id="asking-price">—</div>
+          <div class="cell-note" data-i18n="providedResearch">Property research · read only</div>
+        </div>
+        <div class="benchmark-cell">
+          <div class="cell-label" data-i18n="askingPerKey">Asking price / key</div>
+          <div class="cell-value" id="asking-key">—</div>
+          <div class="cell-note" data-i18n="providedResearch">Property research · read only</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section calculator-grid" aria-label="Operating statement calculator">
+      <div class="stacks">
+        <details class="panel" open>
+          <summary class="panel-summary">
+            <span class="summary-label" data-i18n="income">Income</span>
+            <strong class="summary-value" id="income-headline">$0</strong>
+            <span class="chevron" aria-hidden="true">⌄</span>
+          </summary>
+          <p class="panel-intro" data-i18n="incomeHelp">Industry benchmark estimate. Adjust each line to your actual trailing-twelve-month figures. Changing ADR or occupancy recalculates rooms revenue; rooms revenue can also be overridden directly.</p>
+          <div class="field-list" id="income-fields"></div>
+        </details>
+
+        <details class="panel">
+          <summary class="panel-summary">
+            <span class="summary-label" data-i18n="expenses">Expenses</span>
+            <strong class="summary-value" id="expenses-headline">$0</strong>
+            <span class="chevron" aria-hidden="true">⌄</span>
+          </summary>
+          <p class="panel-intro" data-i18n="expenseHelp">Industry benchmark estimate, allocated to operating line items. There is no blanket expense-ratio input: the ratio below is calculated from your line-item adjustments.</p>
+          <div class="field-list" id="expense-fields"></div>
+        </details>
+      </div>
+
+      <aside class="results" aria-live="polite">
+        <div class="results-head">
+          <h2 data-i18n="liveResults">Live results</h2>
+          <p data-i18n="updatesLive">Updates with every adjustment</p>
+        </div>
+        <div class="result-list">
+          <div class="result-row"><span data-i18n="totalIncome">Total income</span><strong id="result-income">$0</strong></div>
+          <div class="result-row"><span data-i18n="totalExpenses">Total expenses</span><strong id="result-expenses">$0</strong></div>
+          <div class="result-row"><span data-i18n="expenseRatio">Expense ratio</span><strong id="result-ratio">0%</strong></div>
+          <div class="result-row noi"><span data-i18n="noi">Net operating income (NOI)</span><strong id="result-noi">$0</strong></div>
+        </div>
+        <div class="valuation">
+          <div class="valuation-label" data-i18n="indicatedValue">Indicated value · base cap rate</div>
+          <div class="valuation-main" id="result-value">$0</div>
+          <div class="valuation-range" id="result-range">—</div>
+          <div class="valuation-grid">
+            <div><span data-i18n="valuePerKey">Value / key</span><strong id="result-key">$0</strong></div>
+            <div><span data-i18n="vsAsk">Versus asking</span><strong id="result-vs-ask">—</strong></div>
+          </div>
+        </div>
+        <button class="reset-button" type="button" id="reset-button" data-i18n="resetBenchmarks">Reset industry benchmarks</button>
+      </aside>
+    </section>
+
+    <section class="section submit-card" id="send-section" aria-labelledby="send-title">
+      <div class="submit-copy">
+        <h2 id="send-title" data-i18n="sendTitle">Send us your numbers</h2>
+        <p data-i18n="sendIntro">If your actual operating figures differ, share the adjusted statement with our acquisitions team. Your current line items and live valuation will be included.</p>
+        <div class="send-actions">
+          <a class="action-button" id="email-action" href="mailto:espen@embodier.ai"><span data-i18n="sendEmail">Send by email</span></a>
+          <a class="action-button secondary" id="whatsapp-action" href="https://wa.me/12397775813" target="_blank" rel="noopener"><span data-i18n="sendWhatsApp">Send via WhatsApp</span></a>
+          <button class="action-button secondary" type="button" id="copy-action" data-i18n="copyStatement">Copy statement</button>
+        </div>
+        <div class="send-status" id="send-status" role="status"></div>
+        <p class="method-note" data-i18n="sendNote">Choose a channel to prepare the complete statement. You remain in control of sending it.</p>
+      </div>
+      <div class="identity-fields">
+        <label><span data-i18n="yourName">Your name</span><input id="owner-name" type="text" autocomplete="name" /></label>
+        <label><span data-i18n="yourEmail">Your email</span><input id="owner-email" type="email" autocomplete="email" inputmode="email" /></label>
+        <label><span data-i18n="yourPhone">Your phone / WhatsApp</span><input id="owner-phone" type="tel" autocomplete="tel" inputmode="tel" /></label>
+        <label><span data-i18n="notes">Notes for our acquisitions team</span><textarea id="owner-notes"></textarea></label>
+      </div>
+    </section>
+
+    <p class="footnote" data-i18n="methodology">Benchmark planning estimate in USD, not an appraisal. Values are derived from the operating assumptions shown and the selected market cap-rate band. Please replace estimates with actual property records where available.</p>
+  </main>
+
+  <script>
+  (function () {
+    "use strict";
+
+    var markets = {
+      "PE-CUSCO": { capLo: 8.5, cap: 9.0, capHi: 10.0, exp: 0.667, adr: 185, occ: 68, en: "Cusco, Peru", es: "Cusco, Perú" },
+      "MX-TULUM": { capLo: 8.5, cap: 9.0, capHi: 10.5, exp: 0.66, adr: 320, occ: 72, en: "Tulum, Mexico", es: "Tulum, México" },
+      "CR-GUANACASTE": { capLo: 8.5, cap: 9.5, capHi: 11.0, exp: 0.74, adr: 290, occ: 70, en: "Guanacaste, Costa Rica", es: "Guanacaste, Costa Rica" },
+      "CR-BALLENA": { capLo: 10.0, cap: 10.5, capHi: 11.5, exp: 0.74, adr: 210, occ: 66, en: "Costa Ballena, Costa Rica", es: "Costa Ballena, Costa Rica" },
+      "AR-MENDOZA": { capLo: 11.5, cap: 12.5, capHi: 13.5, exp: 0.83, adr: 170, occ: 62, en: "Mendoza, Argentina", es: "Mendoza, Argentina" },
+      "AR-PATAGONIA": { capLo: 12.0, cap: 13.5, capHi: 15.0, exp: 0.83, adr: 230, occ: 60, en: "Patagonia, Argentina", es: "Patagonia, Argentina" },
+      "DEFAULT": { capLo: 8.5, cap: 9.5, capHi: 10.5, exp: 0.68, adr: 200, occ: 65, en: "General resort market", es: "Mercado general de resorts" }
+    };
+
+    var translations = {
+      en: {
+        heroKicker: "Property operating estimate", resortProperty: "Resort property", keys: "keys", marketBenchmarks: "Market benchmarks",
+        capBand: "Market cap-rate band", low: "Low", base: "Base", high: "High", benchmarkOnly: "Market benchmark · read only",
+        compPerKey: "Comp median / key", askingPrice: "Asking price", askingPerKey: "Asking price / key", providedResearch: "Property research · read only",
+        income: "Income", expenses: "Expenses", incomeHelp: "Industry benchmark estimate. Adjust each line to your actual trailing-twelve-month figures. Changing ADR or occupancy recalculates rooms revenue; rooms revenue can also be overridden directly.",
+        expenseHelp: "Industry benchmark estimate, allocated to operating line items. There is no blanket expense-ratio input: the ratio below is calculated from your line-item adjustments.",
+        benchmarkAdjust: "Industry benchmark — adjust to your actuals", liveResults: "Live results", updatesLive: "Updates with every adjustment",
+        totalIncome: "Total income", totalExpenses: "Total expenses", expenseRatio: "Expense ratio", noi: "Net operating income (NOI)",
+        indicatedValue: "Indicated value · base cap rate", rangeAt: "Range at", valuePerKey: "Value / key", vsAsk: "Versus asking", noAsk: "Asking price not provided",
+        premiumToAsk: "premium to asking", discountToAsk: "discount to asking", alignedAsk: "in line with asking", resetBenchmarks: "Reset industry benchmarks",
+        sendTitle: "Send us your numbers", sendIntro: "If your actual operating figures differ, share the adjusted statement with our acquisitions team. Your current line items and live valuation will be included.",
+        sendEmail: "Send by email", sendWhatsApp: "Send via WhatsApp", copyStatement: "Copy statement", copied: "Statement copied. Paste it into any message.",
+        preparedEmail: "Email prepared in your mail app.", preparedWhatsApp: "WhatsApp message prepared.", copyFailed: "Copy was unavailable. Select email or WhatsApp instead.",
+        sendNote: "Choose a channel to prepare the complete statement. You remain in control of sending it.", yourName: "Your name", yourEmail: "Your email", yourPhone: "Your phone / WhatsApp", notes: "Notes for our acquisitions team",
+        methodology: "Benchmark planning estimate in USD, not an appraisal. Values are derived from the operating assumptions shown and the selected market cap-rate band. Please replace estimates with actual property records where available.",
+        notProvided: "Not provided", incomeSection: "INCOME", expenseSection: "EXPENSES", propertySection: "PROPERTY", resultsSection: "LIVE RESULTS",
+        groupRevenue: "Revenue", groupPayroll: "Payroll", groupUtilities: "Utilities", groupMaintenance: "Maintenance", groupMarketing: "Marketing", groupManagement: "Management", groupInsurance: "Insurance & taxes", groupReserves: "Reserves & other",
+        roomsRevenue: "Rooms revenue (TTM USD)", adr: "ADR (USD)", occupancy: "Occupancy (%)", restaurant: "Restaurant revenue (TTM USD)", bar: "Bar revenue (TTM USD)", events: "Events / banquets revenue (TTM USD)", spa: "Spa / wellness revenue (TTM USD)", tours: "Tours & activities commission (TTM USD)", otherIncome: "Other income (TTM USD)",
+        payrollRooms: "Payroll · rooms", payrollFb: "Payroll · food & beverage", payrollAdmin: "Payroll · admin / GM", payrollSales: "Payroll · sales & marketing", payrollMaintenance: "Payroll · maintenance & grounds", payrollTaxes: "Payroll taxes & benefits",
+        electricity: "Electricity", water: "Water", gas: "Gas / propane", internet: "Internet / phone", waste: "Waste",
+        building: "Building repairs", pool: "Pool", landscaping: "Landscaping", equipment: "Equipment",
+        ota: "OTA commissions", ads: "Advertising", pr: "PR / social", managementFees: "Management fees", professional: "Professional services",
+        insurance: "Property / liability insurance", propertyTax: "Property tax", licenses: "Licenses / permits", ffe: "FF&E reserve", otherExpense: "Other expenses",
+        subject: "Adjusted property operating statement"
+      },
+      es: {
+        heroKicker: "Estimación operativa de la propiedad", resortProperty: "Propiedad hotelera", keys: "habitaciones", marketBenchmarks: "Referencias de mercado",
+        capBand: "Rango de tasa de capitalización", low: "Baja", base: "Base", high: "Alta", benchmarkOnly: "Referencia de mercado · solo lectura",
+        compPerKey: "Mediana comparable / habitación", askingPrice: "Precio solicitado", askingPerKey: "Precio solicitado / habitación", providedResearch: "Investigación de la propiedad · solo lectura",
+        income: "Ingresos", expenses: "Gastos", incomeHelp: "Estimación según referencias de la industria. Ajuste cada línea a sus cifras reales de los últimos doce meses. Cambiar ADR u ocupación recalcula los ingresos por habitaciones; también puede sobrescribirlos directamente.",
+        expenseHelp: "Estimación según referencias de la industria, distribuida entre partidas operativas. No existe una entrada única de porcentaje de gastos: el porcentaje se calcula a partir de sus ajustes detallados.",
+        benchmarkAdjust: "Referencia de la industria — ajuste a sus cifras reales", liveResults: "Resultados en vivo", updatesLive: "Se actualizan con cada ajuste",
+        totalIncome: "Ingresos totales", totalExpenses: "Gastos totales", expenseRatio: "Porcentaje de gastos", noi: "Ingreso operativo neto (NOI)",
+        indicatedValue: "Valor indicado · tasa base", rangeAt: "Rango a", valuePerKey: "Valor / habitación", vsAsk: "Frente al precio solicitado", noAsk: "Precio solicitado no proporcionado",
+        premiumToAsk: "por encima del precio solicitado", discountToAsk: "por debajo del precio solicitado", alignedAsk: "en línea con el precio solicitado", resetBenchmarks: "Restablecer referencias de la industria",
+        sendTitle: "Envíenos sus cifras", sendIntro: "Si sus cifras operativas reales difieren, comparta el estado ajustado con nuestro equipo de adquisiciones. Se incluirán las partidas actuales y la valoración en vivo.",
+        sendEmail: "Enviar por email", sendWhatsApp: "Enviar por WhatsApp", copyStatement: "Copiar estado", copied: "Estado copiado. Péguelo en cualquier mensaje.",
+        preparedEmail: "Email preparado en su aplicación de correo.", preparedWhatsApp: "Mensaje de WhatsApp preparado.", copyFailed: "No se pudo copiar. Elija email o WhatsApp.",
+        sendNote: "Elija un canal para preparar el estado completo. Usted mantiene el control del envío.", yourName: "Su nombre", yourEmail: "Su email", yourPhone: "Su teléfono / WhatsApp", notes: "Notas para nuestro equipo de adquisiciones",
+        methodology: "Estimación de planificación según referencias, en USD; no es una tasación. Los valores se derivan de los supuestos operativos mostrados y del rango de tasas del mercado seleccionado. Sustituya las estimaciones por registros reales de la propiedad cuando estén disponibles.",
+        notProvided: "No proporcionado", incomeSection: "INGRESOS", expenseSection: "GASTOS", propertySection: "PROPIEDAD", resultsSection: "RESULTADOS EN VIVO",
+        groupRevenue: "Ingresos", groupPayroll: "Nómina", groupUtilities: "Servicios", groupMaintenance: "Mantenimiento", groupMarketing: "Marketing", groupManagement: "Gestión", groupInsurance: "Seguros e impuestos", groupReserves: "Reservas y otros",
+        roomsRevenue: "Ingresos por habitaciones (últimos 12 meses USD)", adr: "ADR (USD)", occupancy: "Ocupación (%)", restaurant: "Ingresos de restaurante (últimos 12 meses USD)", bar: "Ingresos de bar (últimos 12 meses USD)", events: "Ingresos de eventos / banquetes (últimos 12 meses USD)", spa: "Ingresos de spa / bienestar (últimos 12 meses USD)", tours: "Comisiones de tours y actividades (últimos 12 meses USD)", otherIncome: "Otros ingresos (últimos 12 meses USD)",
+        payrollRooms: "Nómina · habitaciones", payrollFb: "Nómina · alimentos y bebidas", payrollAdmin: "Nómina · administración / gerencia", payrollSales: "Nómina · ventas y marketing", payrollMaintenance: "Nómina · mantenimiento y jardines", payrollTaxes: "Impuestos de nómina y beneficios",
+        electricity: "Electricidad", water: "Agua", gas: "Gas / propano", internet: "Internet / teléfono", waste: "Residuos",
+        building: "Reparaciones del edificio", pool: "Piscina", landscaping: "Jardinería", equipment: "Equipos",
+        ota: "Comisiones OTA", ads: "Publicidad", pr: "Relaciones públicas / redes", managementFees: "Honorarios de gestión", professional: "Servicios profesionales",
+        insurance: "Seguro de propiedad / responsabilidad", propertyTax: "Impuesto predial", licenses: "Licencias / permisos", ffe: "Reserva FF&E", otherExpense: "Otros gastos",
+        subject: "Estado operativo ajustado de la propiedad"
+      }
+    };
+
+    var incomeDefs = [
+      { id: "rooms", label: "roomsRevenue", group: "groupRevenue", step: 1000 },
+      { id: "adr", label: "adr", step: 5 },
+      { id: "occupancy", label: "occupancy", step: 1, max: 100 },
+      { id: "restaurant", label: "restaurant", step: 500 },
+      { id: "bar", label: "bar", step: 500 },
+      { id: "events", label: "events", step: 500 },
+      { id: "spa", label: "spa", step: 500 },
+      { id: "tours", label: "tours", step: 500 },
+      { id: "otherIncome", label: "otherIncome", step: 500 }
+    ];
+    var expenseDefs = [
+      { id: "payrollRooms", label: "payrollRooms", group: "groupPayroll", share: 7 },
+      { id: "payrollFb", label: "payrollFb", share: 8 },
+      { id: "payrollAdmin", label: "payrollAdmin", share: 5 },
+      { id: "payrollSales", label: "payrollSales", share: 3.5 },
+      { id: "payrollMaintenance", label: "payrollMaintenance", share: 3 },
+      { id: "payrollTaxes", label: "payrollTaxes", share: 4 },
+      { id: "electricity", label: "electricity", group: "groupUtilities", share: 3.5 },
+      { id: "water", label: "water", share: 1 },
+      { id: "gas", label: "gas", share: 1 },
+      { id: "internet", label: "internet", share: .8 },
+      { id: "waste", label: "waste", share: .4 },
+      { id: "building", label: "building", group: "groupMaintenance", share: 2 },
+      { id: "pool", label: "pool", share: .8 },
+      { id: "landscaping", label: "landscaping", share: 1.2 },
+      { id: "equipment", label: "equipment", share: 1 },
+      { id: "ota", label: "ota", group: "groupMarketing", share: 4 },
+      { id: "ads", label: "ads", share: 2 },
+      { id: "pr", label: "pr", share: 1 },
+      { id: "managementFees", label: "managementFees", group: "groupManagement", share: 3 },
+      { id: "professional", label: "professional", share: 1 },
+      { id: "insurance", label: "insurance", group: "groupInsurance", share: 2 },
+      { id: "propertyTax", label: "propertyTax", share: 2 },
+      { id: "licenses", label: "licenses", share: .5 },
+      { id: "ffe", label: "ffe", group: "groupReserves", share: 4 },
+      { id: "otherExpense", label: "otherExpense", share: 2 }
+    ];
+
+    var params = new URLSearchParams(window.location.search);
+    function cleanText(value, fallback) { var text = (value || "").trim(); return text ? text.slice(0, 120) : fallback; }
+    function cleanNumber(name, fallback, min, max) {
+      var raw = params.get(name); var value = raw === null ? fallback : Number(String(raw).replace(/,/g, ""));
+      if (!isFinite(value)) value = fallback;
+      if (typeof min === "number") value = Math.max(min, value);
+      if (typeof max === "number") value = Math.min(max, value);
+      return value;
+    }
+    var marketCode = (params.get("market") || "DEFAULT").toUpperCase();
+    if (!markets[marketCode]) marketCode = "DEFAULT";
+    var market = Object.assign({}, markets[marketCode]);
+    market.cap = cleanNumber("cap", market.cap, .1, 100);
+    market.capLo = cleanNumber("cap_lo", market.capLo, .1, 100);
+    market.capHi = cleanNumber("cap_hi", market.capHi, .1, 100);
+    var property = cleanText(params.get("property"), "");
+    var keys = Math.round(cleanNumber("keys", 50, 1, 5000));
+    var city = cleanText(params.get("city"), "");
+    var country = cleanText(params.get("country"), "");
+    var ask = cleanNumber("ask", 0, 0, 10000000000);
+    var compPerKey = cleanNumber("pk", 0, 0, 100000000);
+    var requestedLang = (params.get("lang") || "").toLowerCase();
+    var lang = requestedLang === "es" || requestedLang === "en" ? requestedLang : ((navigator.language || "en").toLowerCase().indexOf("es") === 0 ? "es" : "en");
+    var initialValues = {};
+
+    function t(key) { return translations[lang][key] || translations.en[key] || key; }
+    function formatCurrency(value, compact) {
+      if (!isFinite(value)) return "—";
+      var options = { style: "currency", currency: "USD", maximumFractionDigits: 0 };
+      if (compact && Math.abs(value) >= 1000000) { options.notation = "compact"; options.compactDisplay = "short"; options.maximumFractionDigits = 2; }
+      return new Intl.NumberFormat(lang === "es" ? "es-US" : "en-US", options).format(value);
+    }
+    function formatPercent(value) { return new Intl.NumberFormat(lang === "es" ? "es-US" : "en-US", { minimumFractionDigits: 1, maximumFractionDigits: 1 }).format(value) + "%"; }
+    function valueOf(id) { var input = document.getElementById("field-" + id); return input ? Math.max(0, Number(input.value) || 0) : 0; }
+
+    function benchmarkValues() {
+      var total = market.adr * (market.occ / 100) * 365 * keys / .70;
+      var values = {
+        rooms: total * .70, adr: market.adr, occupancy: market.occ, restaurant: total * .12, bar: total * .05,
+        events: total * .03, spa: total * .04, tours: total * .02, otherIncome: total * .04
+      };
+      var scale = market.exp / .637;
+      expenseDefs.forEach(function (def) { values[def.id] = total * (def.share / 100) * scale; });
+      return values;
+    }
+
+    function makeFields(containerId, defs, values) {
+      var container = document.getElementById(containerId);
+      container.innerHTML = "";
+      defs.forEach(function (def) {
+        if (def.group) {
+          var group = document.createElement("div");
+          group.className = "group-title";
+          group.textContent = t(def.group);
+          container.appendChild(group);
+        }
+        var row = document.createElement("div"); row.className = "field-row";
+        var copy = document.createElement("div"); copy.className = "field-copy";
+        var label = document.createElement("label"); label.htmlFor = "field-" + def.id; label.textContent = t(def.label);
+        var note = document.createElement("div"); note.className = "benchmark-note"; note.textContent = t("benchmarkAdjust");
+        copy.appendChild(label); copy.appendChild(note);
+        var stepper = document.createElement("div"); stepper.className = "stepper";
+        var minus = document.createElement("button"); minus.type = "button"; minus.textContent = "−"; minus.setAttribute("aria-label", "Decrease " + t(def.label)); minus.dataset.target = def.id; minus.dataset.direction = "-1";
+        var input = document.createElement("input"); input.type = "number"; input.id = "field-" + def.id; input.min = "0"; if (def.max) input.max = String(def.max); input.step = String(def.step || 500); input.value = String(Math.round(values[def.id] * 100) / 100); input.inputMode = "decimal";
+        var plus = document.createElement("button"); plus.type = "button"; plus.textContent = "+"; plus.setAttribute("aria-label", "Increase " + t(def.label)); plus.dataset.target = def.id; plus.dataset.direction = "1";
+        stepper.appendChild(minus); stepper.appendChild(input); stepper.appendChild(plus);
+        row.appendChild(copy); row.appendChild(stepper); container.appendChild(row);
+      });
+    }
+
+    function populateFields(reset) {
+      var values = benchmarkValues();
+      if (!reset) initialValues = Object.assign({}, values);
+      makeFields("income-fields", incomeDefs, values);
+      makeFields("expense-fields", expenseDefs, values);
+      bindFieldEvents();
+      calculate();
+    }
+
+    function bindFieldEvents() {
+      document.querySelectorAll(".stepper button").forEach(function (button) {
+        button.addEventListener("click", function () {
+          var input = document.getElementById("field-" + button.dataset.target);
+          var step = Number(input.step) || 1;
+          var next = (Number(input.value) || 0) + Number(button.dataset.direction) * step;
+          if (input.max) next = Math.min(Number(input.max), next);
+          input.value = String(Math.max(0, next));
+          if (button.dataset.target === "adr" || button.dataset.target === "occupancy") syncRooms();
+          calculate();
+        });
+      });
+      document.querySelectorAll(".stepper input").forEach(function (input) {
+        input.addEventListener("input", function () {
+          if (input.id === "field-adr" || input.id === "field-occupancy") syncRooms();
+          calculate();
+        });
+      });
+    }
+
+    function syncRooms() {
+      var rooms = valueOf("adr") * (valueOf("occupancy") / 100) * 365 * keys;
+      document.getElementById("field-rooms").value = String(Math.round(rooms));
+    }
+
+    function calculate() {
+      var totalIncome = incomeDefs.filter(function (d) { return d.id !== "adr" && d.id !== "occupancy"; }).reduce(function (sum, d) { return sum + valueOf(d.id); }, 0);
+      var totalExpenses = expenseDefs.reduce(function (sum, d) { return sum + valueOf(d.id); }, 0);
+      var noi = totalIncome - totalExpenses;
+      var ratio = totalIncome ? totalExpenses / totalIncome * 100 : 0;
+      var baseValue = market.cap ? noi / (market.cap / 100) : 0;
+      var lowValue = market.capHi ? noi / (market.capHi / 100) : 0;
+      var highValue = market.capLo ? noi / (market.capLo / 100) : 0;
+      var perKey = keys ? baseValue / keys : 0;
+      document.getElementById("income-headline").textContent = formatCurrency(totalIncome, true);
+      document.getElementById("expenses-headline").textContent = formatCurrency(totalExpenses, true);
+      document.getElementById("result-income").textContent = formatCurrency(totalIncome);
+      document.getElementById("result-expenses").textContent = formatCurrency(totalExpenses);
+      document.getElementById("result-ratio").textContent = formatPercent(ratio);
+      document.getElementById("result-noi").textContent = formatCurrency(noi);
+      document.getElementById("result-value").textContent = formatCurrency(baseValue, true);
+      document.getElementById("result-range").textContent = t("rangeAt") + " " + formatPercent(market.capLo) + "–" + formatPercent(market.capHi) + ": " + formatCurrency(lowValue, true) + "–" + formatCurrency(highValue, true);
+      document.getElementById("result-key").textContent = formatCurrency(perKey);
+      if (!ask) document.getElementById("result-vs-ask").textContent = t("noAsk");
+      else {
+        var diff = (baseValue - ask) / ask * 100;
+        document.getElementById("result-vs-ask").textContent = Math.abs(diff) < .05 ? t("alignedAsk") : formatPercent(Math.abs(diff)) + " " + (diff > 0 ? t("premiumToAsk") : t("discountToAsk"));
+      }
+    }
+
+    function updateStaticText() {
+      document.documentElement.lang = lang;
+      document.querySelectorAll("[data-i18n]").forEach(function (el) { el.textContent = t(el.dataset.i18n); });
+      document.getElementById("lang-en").setAttribute("aria-pressed", String(lang === "en"));
+      document.getElementById("lang-es").setAttribute("aria-pressed", String(lang === "es"));
+      document.getElementById("property-title").textContent = property || t("resortProperty");
+      var location = [city, country].filter(Boolean).join(", ");
+      document.getElementById("property-meta").textContent = keys + " " + t("keys") + (location ? " · " + location : "");
+      document.getElementById("market-name").textContent = market[lang] + " · USD";
+      document.getElementById("cap-lo").textContent = formatPercent(market.capLo);
+      document.getElementById("cap-base").textContent = formatPercent(market.cap);
+      document.getElementById("cap-hi").textContent = formatPercent(market.capHi);
+      document.getElementById("comp-key").textContent = compPerKey ? formatCurrency(compPerKey) : t("notProvided");
+      document.getElementById("asking-price").textContent = ask ? formatCurrency(ask, true) : t("notProvided");
+      document.getElementById("asking-key").textContent = ask && keys ? formatCurrency(ask / keys) : t("notProvided");
+    }
+
+    function rerenderLanguage() {
+      var current = {};
+      incomeDefs.concat(expenseDefs).forEach(function (d) { current[d.id] = valueOf(d.id); });
+      updateStaticText();
+      makeFields("income-fields", incomeDefs, current);
+      makeFields("expense-fields", expenseDefs, current);
+      bindFieldEvents(); calculate(); updateSendLinks();
+    }
+
+    function statementText() {
+      var lines = [];
+      lines.push(t("subject")); lines.push("================================");
+      lines.push(t("propertySection"));
+      lines.push((property || t("resortProperty")) + " | " + keys + " " + t("keys"));
+      if (city || country) lines.push([city, country].filter(Boolean).join(", "));
+      lines.push(t("askingPrice") + ": " + (ask ? formatCurrency(ask) : t("notProvided")));
+      lines.push(t("capBand") + ": " + formatPercent(market.capLo) + " / " + formatPercent(market.cap) + " / " + formatPercent(market.capHi));
+      lines.push(""); lines.push(t("incomeSection"));
+      incomeDefs.forEach(function (d) { lines.push(t(d.label) + ": " + (d.id === "occupancy" ? formatPercent(valueOf(d.id)) : formatCurrency(valueOf(d.id)))); });
+      lines.push(""); lines.push(t("expenseSection"));
+      expenseDefs.forEach(function (d) { lines.push(t(d.label) + ": " + formatCurrency(valueOf(d.id))); });
+      var totalIncome = incomeDefs.filter(function (d) { return d.id !== "adr" && d.id !== "occupancy"; }).reduce(function (sum, d) { return sum + valueOf(d.id); }, 0);
+      var totalExpenses = expenseDefs.reduce(function (sum, d) { return sum + valueOf(d.id); }, 0);
+      var noi = totalIncome - totalExpenses;
+      var baseValue = noi / (market.cap / 100);
+      lines.push(""); lines.push(t("resultsSection"));
+      lines.push(t("totalIncome") + ": " + formatCurrency(totalIncome));
+      lines.push(t("totalExpenses") + ": " + formatCurrency(totalExpenses));
+      lines.push(t("expenseRatio") + ": " + formatPercent(totalIncome ? totalExpenses / totalIncome * 100 : 0));
+      lines.push(t("noi") + ": " + formatCurrency(noi));
+      lines.push(t("indicatedValue") + ": " + formatCurrency(baseValue));
+      lines.push(t("valuePerKey") + ": " + formatCurrency(baseValue / keys));
+      lines.push("");
+      lines.push(t("yourName") + ": " + (document.getElementById("owner-name").value || "—"));
+      lines.push(t("yourEmail") + ": " + (document.getElementById("owner-email").value || "—"));
+      lines.push(t("yourPhone") + ": " + (document.getElementById("owner-phone").value || "—"));
+      lines.push(t("notes") + ": " + (document.getElementById("owner-notes").value || "—"));
+      return lines.join("\n");
+    }
+
+    function updateSendLinks() {
+      var text = statementText();
+      var subject = t("subject") + " — " + (property || t("resortProperty"));
+      document.getElementById("email-action").href = "mailto:espen@embodier.ai?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(text);
+      document.getElementById("whatsapp-action").href = "https://wa.me/12397775813?text=" + encodeURIComponent(text);
+    }
+
+    document.getElementById("lang-en").addEventListener("click", function () { lang = "en"; rerenderLanguage(); });
+    document.getElementById("lang-es").addEventListener("click", function () { lang = "es"; rerenderLanguage(); });
+    document.getElementById("reset-button").addEventListener("click", function () { populateFields(true); updateSendLinks(); });
+    ["owner-name", "owner-email", "owner-phone", "owner-notes"].forEach(function (id) { document.getElementById(id).addEventListener("input", updateSendLinks); });
+    document.getElementById("email-action").addEventListener("click", function () { updateSendLinks(); document.getElementById("send-status").textContent = t("preparedEmail"); });
+    document.getElementById("whatsapp-action").addEventListener("click", function () { updateSendLinks(); document.getElementById("send-status").textContent = t("preparedWhatsApp"); });
+    document.getElementById("copy-action").addEventListener("click", function () {
+      var text = statementText();
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(function () { document.getElementById("send-status").textContent = t("copied"); }, function () { document.getElementById("send-status").textContent = t("copyFailed"); });
+      } else {
+        var area = document.createElement("textarea"); area.value = text; area.style.position = "fixed"; area.style.opacity = "0"; document.body.appendChild(area); area.select();
+        try { document.execCommand("copy"); document.getElementById("send-status").textContent = t("copied"); } catch (e) { document.getElementById("send-status").textContent = t("copyFailed"); }
+        document.body.removeChild(area);
+      }
+    });
+    document.addEventListener("input", function (event) { if (event.target.matches(".stepper input")) updateSendLinks(); });
+
+    updateStaticText();
+    populateFields(false);
+    updateSendLinks();
+  }());
+  </script>
+</body>
+</html>
