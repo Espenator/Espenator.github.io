@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Embodier — The Program | El programa</title>
+<meta name="description" content="Own a piece of the world's finest boutique resorts. Capital partners, token buyers, resort owners — one collection.">
+<style>
+:root{
+  --ink:#0e0c09; --ink2:#171310; --cream:#f5efe4; --cream2:#ece2cf;
+  --gold:#c8a24b; --gold2:#e3c37c; --muted:#a89e8b; --line:rgba(200,162,75,.22);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--ink);color:var(--cream);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Helvetica,Arial,sans-serif;line-height:1.65;-webkit-font-smoothing:antialiased}
+.serif{font-family:Georgia,"Times New Roman",serif}
+.wrap{max-width:1060px;margin:0 auto;padding:0 22px}
+a{color:var(--gold2)}
+/* nav */
+nav{position:sticky;top:0;z-index:50;background:rgba(14,12,9,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+nav .wrap{display:flex;align-items:center;justify-content:space-between;padding:14px 22px}
+.brand{font-family:Georgia,serif;letter-spacing:.35em;font-size:15px;color:var(--cream);text-decoration:none}
+.brand small{display:block;letter-spacing:.2em;font-size:9px;color:var(--gold);font-family:-apple-system,sans-serif;margin-top:2px}
+.lang{display:flex;border:1px solid var(--line);border-radius:999px;overflow:hidden}
+.lang button{background:transparent;border:0;color:var(--muted);font-size:12px;font-weight:700;letter-spacing:.12em;padding:8px 16px;cursor:pointer}
+.lang button.on{background:var(--gold);color:#14100a}
+/* hero */
+.hero{position:relative;padding:96px 0 72px;text-align:center;overflow:hidden;
+  background:radial-gradient(1100px 480px at 50% -8%,rgba(200,162,75,.20),transparent 60%),linear-gradient(180deg,#141009 0%,#0e0c09 70%)}
+.kicker{color:var(--gold);letter-spacing:.32em;font-size:11px;font-weight:700;margin-bottom:18px}
+.hero h1{font-family:Georgia,serif;font-size:clamp(34px,6vw,60px);line-height:1.12;font-weight:400;margin-bottom:18px}
+.hero h1 em{color:var(--gold2);font-style:italic}
+.hero p.sub{color:var(--cream2);font-size:clamp(15px,2.4vw,19px);max-width:640px;margin:0 auto 34px}
+.cta{display:inline-block;background:var(--gold);color:#14100a;font-weight:800;letter-spacing:.14em;font-size:14px;text-decoration:none;padding:17px 46px;border-radius:999px;transition:transform .18s,box-shadow .18s}
+.cta:hover{transform:translateY(-2px);box-shadow:0 12px 32px rgba(200,162,75,.35)}
+.cta.ghost{background:transparent;color:var(--gold2);border:1px solid var(--line);margin-left:10px}
+/* sections */
+section{padding:64px 0;border-top:1px solid rgba(200,162,75,.12)}
+.secnum{color:var(--gold);font-size:12px;letter-spacing:.3em;font-weight:700;margin-bottom:10px}
+h2{font-family:Georgia,serif;font-weight:400;font-size:clamp(26px,4.4vw,40px);margin-bottom:14px;line-height:1.2}
+h2 em{color:var(--gold2);font-style:italic}
+.lede{color:var(--cream2);max-width:680px;margin-bottom:30px;font-size:16px}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px;margin:28px 0}
+.card{background:var(--ink2);border:1px solid var(--line);border-radius:16px;padding:28px 24px}
+.card h3{font-family:Georgia,serif;font-weight:400;font-size:21px;color:var(--gold2);margin-bottom:10px}
+.card .tag{display:inline-block;font-size:11px;letter-spacing:.18em;font-weight:700;color:var(--gold);border:1px solid var(--line);border-radius:999px;padding:4px 12px;margin-bottom:12px}
+.card p{font-size:14.5px;color:var(--cream2)}
+.card ul{list-style:none;margin-top:12px}
+.card ul li{font-size:14px;color:var(--cream2);padding:7px 0 7px 26px;position:relative;border-top:1px solid rgba(200,162,75,.1)}
+.card ul li::before{content:"◆";position:absolute;left:2px;color:var(--gold);font-size:10px;top:12px}
+.steps{counter-reset:step;display:grid;gap:14px;margin:24px 0}
+.step{background:var(--ink2);border:1px solid var(--line);border-radius:14px;padding:20px 22px 20px 74px;position:relative}
+.step::before{counter-increment:step;content:counter(step);position:absolute;left:22px;top:18px;width:36px;height:36px;border:1px solid var(--gold);border-radius:50%;color:var(--gold2);font-family:Georgia,serif;display:flex;align-items:center;justify-content:center;font-size:17px}
+.step h4{font-size:16px;color:var(--cream);margin-bottom:6px}
+.step p{font-size:14px;color:var(--cream2)}
+.quote{text-align:center;font-family:Georgia,serif;font-style:italic;font-size:clamp(20px,3.4vw,28px);color:var(--gold2);margin:44px auto;max-width:640px;line-height:1.5}
+/* faq */
+.faq{border:1px solid var(--line);border-radius:14px;margin-bottom:12px;overflow:hidden;background:var(--ink2)}
+.faq summary{cursor:pointer;padding:18px 22px;font-weight:700;font-size:15px;list-style:none;display:flex;justify-content:space-between;align-items:center}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";color:var(--gold);font-size:20px}
+.faq[open] summary::after{content:"–"}
+.faq .a{padding:0 22px 20px;font-size:14.5px;color:var(--cream2)}
+/* footer */
+footer{border-top:1px solid var(--line);padding:48px 0 60px;background:#0a0806}
+.disclaimer{font-size:12px;color:var(--muted);line-height:1.7;margin-bottom:26px}
+.contact{display:flex;flex-wrap:wrap;gap:8px 28px;font-size:14px;margin-bottom:26px}
+.contact a{color:var(--cream2);text-decoration:none}
+.endline{text-align:center;font-family:Georgia,serif;letter-spacing:.4em;font-size:13px;color:var(--gold);margin-top:34px}
+.sticky-cta{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);z-index:60;display:none}
+.sticky-cta .cta{padding:14px 38px;box-shadow:0 10px 30px rgba(0,0,0,.5)}
+@media(max-width:640px){.sticky-cta{display:block}section{padding:48px 0}}
+</style>
+</head>
+<body>
+<nav><div class="wrap">
+  <a class="brand" href="#">EMBODIER<small>TECH PACKAGE</small></a>
+  <div class="lang"><button id="btn-en" class="on" onclick="setLang('en')">EN</button><button id="btn-es" onclick="setLang('es')">ES</button></div>
+</div></nav>
+
+<div class="hero"><div class="wrap">
+  <div class="kicker" data-en="THE EMBODIER PROGRAM" data-es="EL PROGRAMA EMBODIER">THE EMBODIER PROGRAM</div>
+  <h1 data-en="Own a piece of the places you <em>love</em>." data-es="Sé dueño de una parte de los lugares que <em>amas</em>.">Own a piece of the places you <em>love</em>.</h1>
+  <p class="sub" data-en="We acquire boutique luxury resorts across Latin America — and hold them for decades. Three ways to belong to the collection: as a capital partner, as a token owner, or as the owner who sells to us." data-es="Adquirimos resorts boutique de lujo en América Latina — y los conservamos por décadas. Tres formas de pertenecer a la colección: como socio de capital, como dueño de tokens, o como el propietario que nos vende.">We acquire boutique luxury resorts across Latin America — and hold them for decades. Three ways to belong to the collection: as a capital partner, as a token owner, or as the owner who sells to us.</p>
+  <a class="cta" href="https://espenator.github.io/embodier-waitlist/" data-en="I WANT IN" data-es="QUIERO ENTRAR">I WANT IN</a>
+</div></div>
+
+<div class="wrap">
+<!-- 1 OVERVIEW -->
+<section id="program">
+  <div class="secnum">01</div>
+  <h2 data-en="The <em>program</em>" data-es="El <em>programa</em>">The <em>program</em></h2>
+  <p class="lede" data-en="Embodier is a collector, not a flipper. We buy a small number of exceptional boutique resorts — two or three a year — recapitalize them with private capital, and hold them for decades, run beautifully. Tokenization lets a wider circle own a piece of the collection." data-es="Embodier es un coleccionista, no un especulador. Compramos un número reducido de resorts boutique excepcionales — dos o tres al año — los recapitalizamos con capital privado y los conservamos por décadas, operados de forma impecable. La tokenización permite que un círculo más amplio sea dueño de una parte de la colección.">Embodier is a collector, not a flipper. We buy a small number of exceptional boutique resorts — two or three a year — recapitalize them with private capital, and hold them for decades, run beautifully. Tokenization lets a wider circle own a piece of the collection.</p>
+  <div class="cards">
+    <div class="card"><span class="tag" data-en="ACQUIRE" data-es="ADQUIRIR">ACQUIRE</span><h3 data-en="Boutique luxury, cash-flowing" data-es="Boutique de lujo, con flujo de caja">Boutique luxury, cash-flowing</h3><p data-en="Operating resorts of 10+ keys across Peru, Mexico, Costa Rica and Argentina. No greenfield, no renderings — real places with real guests." data-es="Resorts operativos de más de 10 habitaciones en Perú, México, Costa Rica y Argentina. Nada de proyectos en planos — lugares reales con huéspedes reales.">Operating resorts of 10+ keys across Peru, Mexico, Costa Rica and Argentina. No greenfield, no renderings — real places with real guests.</p></div>
+    <div class="card"><span class="tag" data-en="HOLD" data-es="CONSERVAR">HOLD</span><h3 data-en="Decades, not quarters" data-es="Décadas, no trimestres">Decades, not quarters</h3><p data-en="Each acquisition sits in its own entity, run for the long term. We are stewards of the collection — what we keep defines us." data-es="Cada adquisición vive en su propia entidad, operada a largo plazo. Somos custodios de la colección — lo que conservamos nos define.">Each acquisition sits in its own entity, run for the long term. We are stewards of the collection — what we keep defines us.</p></div>
+    <div class="card"><span class="tag" data-en="TOKENIZE" data-es="TOKENIZAR">TOKENIZE</span><h3 data-en="Ownership, in pieces" data-es="Propiedad, en partes">Ownership, in pieces</h3><p data-en="After each resort is owned and operating, tokenized equity opens the collection to a wider circle — starting at $500." data-es="Cuando cada resort ya es nuestro y opera, el equity tokenizado abre la colección a un círculo más amplio — desde $500.">After each resort is owned and operating, tokenized equity opens the collection to a wider circle — starting at $500.</p></div>
+  </div>
+  <div class="quote" data-en="“A collection is defined by what it keeps.”" data-es="“Una colección se define por lo que conserva.”">“A collection is defined by what it keeps.”</div>
+  <a class="cta" href="https://espenator.github.io/embodier-waitlist/" data-en="I WANT IN" data-es="QUIERO ENTRAR">I WANT IN</a>
+</section>
+
+<!-- 2 CAPITAL -->
+<section id="capital">
+  <div class="secnum">02</div>
+  <h2 data-en="Capital <em>partners</em>" data-es="Socios de <em>capital</em>">Capital <em>partners</em></h2>
+  <p class="lede" data-en="The large leg buys the resort. Capital partners fund each acquisition through a dedicated per-deal entity — 100% private capital, no banks. Minimum $50,000 · standard unit $100,000." data-es="La pata grande compra el resort. Los socios de capital financian cada adquisición a través de una entidad dedicada por operación — 100% capital privado, sin bancos. Mínimo $50,000 · unidad estándar $100,000.">The large leg buys the resort. Capital partners fund each acquisition through a dedicated per-deal entity — 100% private capital, no banks. Minimum $50,000 · standard unit $100,000.</p>
+  <div class="steps">
+    <div class="step"><h4 data-en="Apply" data-es="Aplica">Apply</h4><p data-en="Investors apply for our approval as approved capital partners. We approve a limited circle per acquisition — the gate is felt, never announced." data-es="Los inversionistas aplican para nuestra aprobación como socios de capital aprobados. Aprobamos un círculo limitado por adquisición.">Investors apply for our approval as approved capital partners. We approve a limited circle per acquisition — the gate is felt, never announced.</p></div>
+    <div class="step"><h4 data-en="Get approved" data-es="Sé aprobado">Get approved</h4><p data-en="Approved partners see every deal first. Prospects never see live deals until they pass our gates." data-es="Los socios aprobados ven cada operación primero. Nadie ve operaciones en vivo sin pasar nuestras puertas.">Approved partners see every deal first. Prospects never see live deals until they pass our gates.</p></div>
+    <div class="step"><h4 data-en="Fund the closing" data-es="Financia el cierre">Fund the closing</h4><p data-en="Each acquisition closes with private equity plus a seller note — no bank debt that can force a default. Committed funds sit in independent escrow before closing." data-es="Cada adquisición cierra con equity privado más un pagaré del vendedor — sin deuda bancaria que pueda forzar un incumplimiento. Los fondos comprometidos están en custodia independiente antes del cierre.">Each acquisition closes with private equity plus a seller note — no bank debt that can force a default. Committed funds sit in independent escrow before closing.</p></div>
+    <div class="step"><h4 data-en="Own the upside" data-es="Sé dueño del crecimiento">Own the upside</h4><p data-en="Preferred equity position with priority returns, first capital back, and a vote on the big moves — sale, debt, manager changes." data-es="Posición de equity preferente con retornos prioritarios, primer retorno de capital y voto en las decisiones grandes — venta, deuda, cambios de operador.">Preferred equity position with priority returns, first capital back, and a vote on the big moves — sale, debt, manager changes.</p></div>
+  </div>
+  <a class="cta" href="mailto:espen@embodier.ai?subject=Capital%20Partner%20Application" data-en="I WANT IN" data-es="QUIERO ENTRAR">I WANT IN</a>
+  <a class="cta ghost" href="tel:+12397775813">+1 239-777-5813</a>
+</section>
+
+<!-- 3 TOKEN BUYERS -->
+<section id="tokens">
+  <div class="secnum">03</div>
+  <h2 data-en="Token <em>owners</em>" data-es="Dueños de <em>tokens</em>">Token <em>owners</em></h2>
+  <p class="lede" data-en="The small leg buys into the resort — after it's owned and operating. $1 per token · $500 minimum. Own a piece of the place you stayed." data-es="La pata pequeña compra una parte del resort — cuando ya es nuestro y opera. $1 por token · mínimo $500. Sé dueño de una parte del lugar donde te hospedaste.">The small leg buys into the resort — after it's owned and operating. $1 per token · $500 minimum. Own a piece of the place you stayed.</p>
+  <div class="cards">
+    <div class="card"><span class="tag">OWNER'S CIRCLE · $500+</span><h3 data-en="Belong to the collection" data-es="Pertenece a la colección">Belong to the collection</h3><p data-en="From $500 to $4,999: tokenized equity interest plus owner-club perks — stays, benefits, priority access to new openings." data-es="De $500 a $4,999: participación tokenizada más beneficios del club de dueños — estadías, beneficios, acceso prioritario a nuevas aperturas.">From $500 to $4,999: tokenized equity interest plus owner-club perks — stays, benefits, priority access to new openings.</p></div>
+    <div class="card"><span class="tag">EQUITY PLUS · $5,000+</span><h3 data-en="A deeper stake" data-es="Una participación mayor">A deeper stake</h3><p data-en="From $5,000: larger equity interest with smart-contract distributions, plus full owner-club benefits." data-es="Desde $5,000: mayor participación accionaria con distribuciones vía smart contract, más todos los beneficios del club.">From $5,000: larger equity interest with smart-contract distributions, plus full owner-club benefits.</p></div>
+    <div class="card"><span class="tag" data-en="HOW IT STARTS" data-es="CÓMO EMPIEZA">HOW IT STARTS</span><h3 data-en="The waitlist" data-es="La lista de espera">The waitlist</h3><p data-en="Join the waitlist with your phone number. When bidding opens on a project, a $100 fully-refundable reservation holds your place in line — credited toward your purchase, refunded any time for any reason." data-es="Únete a la lista de espera con tu número de teléfono. Cuando se abran las ofertas de un proyecto, una reserva de $100 totalmente reembolsable guarda tu lugar — se acredita a tu compra y se devuelve cuando quieras, por cualquier motivo.">Join the waitlist with your phone number. When bidding opens on a project, a $100 fully-refundable reservation holds your place in line — credited toward your purchase, refunded any time for any reason.</p></div>
+  </div>
+  <a class="cta" href="https://espenator.github.io/embodier-waitlist/" data-en="I WANT IN" data-es="QUIERO ENTRAR">I WANT IN</a>
+</section>
+
+<!-- 4 OWNERS -->
+<section id="owners">
+  <div class="secnum">04</div>
+  <h2 data-en="Resort <em>owners</em>" data-es="Dueños de <em>resorts</em>">Resort <em>owners</em></h2>
+  <p class="lede" data-en="We buy in phases — not an all-or-nothing closing. The total price is agreed and signed up front, funds are committed to independent escrow, and your hotel keeps operating undisturbed through the transition." data-es="Compramos por fases — no un cierre de todo o nada. El precio total se acuerda y firma por adelantado, los fondos se comprometen en custodia independiente, y tu hotel sigue operando sin interrupciones durante la transición.">We buy in phases — not an all-or-nothing closing. The total price is agreed and signed up front, funds are committed to independent escrow, and your hotel keeps operating undisturbed through the transition.</p>
+  <div class="cards">
+    <div class="card"><span class="tag" data-en="PATH 1" data-es="VÍA 1">PATH 1</span><h3 data-en="Sale" data-es="Venta">Sale</h3><p data-en="A clean, orderly exit in phases. Fixed schedule, fixed amounts, secured against the asset — every payment has a date." data-es="Una salida limpia y ordenada, por fases. Calendario fijo, montos fijos, respaldados contra el activo — cada pago tiene fecha.">A clean, orderly exit in phases. Fixed schedule, fixed amounts, secured against the asset — every payment has a date.</p></div>
+    <div class="card"><span class="tag" data-en="PATH 2" data-es="VÍA 2">PATH 2</span><h3 data-en="Partial sale" data-es="Venta parcial">Partial sale</h3><p data-en="Retain a minority stake with defined rights and keep participating in the growth of what you built." data-es="Conserva una participación minoritaria con derechos definidos y sigue participando del crecimiento de lo que construiste.">Retain a minority stake with defined rights and keep participating in the growth of what you built.</p></div>
+    <div class="card"><span class="tag" data-en="PATH 3" data-es="VÍA 3">PATH 3</span><h3 data-en="Expansion" data-es="Expansión">Expansion</h3><p data-en="We fund renovation and growth while you keep operating — your property takes its place among the finest boutique resorts in LATAM." data-es="Financiamos la renovación y el crecimiento mientras tú sigues operando — tu propiedad toma su lugar entre los mejores resorts boutique de LATAM.">We fund renovation and growth while you keep operating — your property takes its place among the finest boutique resorts in LATAM.</p></div>
+  </div>
+  <a class="cta" href="mailto:espen@embodier.ai?subject=Resort%20Owner%20Conversation" data-en="I WANT IN" data-es="QUIERO ENTRAR">I WANT IN</a>
+  <a class="cta ghost" href="https://wa.me/12397775813">WhatsApp</a>
+</section>
+
+<!-- 5 FAQ -->
+<section id="faq">
+  <div class="secnum">05</div>
+  <h2 data-en="Questions, <em>answered</em>" data-es="Preguntas <em>frecuentes</em>">Questions, <em>answered</em></h2>
+  <div style="margin-top:26px">
+  <details class="faq"><summary data-en="Is this a live token sale?" data-es="¿Es esto una venta de tokens en vivo?">Is this a live token sale?</summary><div class="a" data-en="No. We are pre-license: the platform is in development pending licensing in El Salvador. Today we collect waitlist signups and soft commitments only. No tokens are offered for sale and no secondary trading exists." data-es="No. Estamos en etapa previa a la licencia: la plataforma está en desarrollo, pendiente de licencias en El Salvador. Hoy solo reunimos registros en lista de espera y compromisos suaves. Ningún token está a la venta y no existe mercado secundario.">No. We are pre-license: the platform is in development pending licensing in El Salvador. Today we collect waitlist signups and soft commitments only. No tokens are offered for sale and no secondary trading exists.</div></details>
+  <details class="faq"><summary data-en="What does the $100 reservation do?" data-es="¿Qué hace la reserva de $100?">What does the $100 reservation do?</summary><div class="a" data-en="It holds your place in line when bidding opens on a project. It is fully refundable at any time for any reason, and credited toward the $500 token minimum at the offering. It is not a token purchase and creates no investment entitlement." data-es="Guarda tu lugar en la fila cuando se abran las ofertas de un proyecto. Es totalmente reembolsable en cualquier momento y por cualquier motivo, y se acredita al mínimo de $500 en la oferta. No es una compra de tokens ni crea ningún derecho de inversión.">It holds your place in line when bidding opens on a project. It is fully refundable at any time for any reason, and credited toward the $500 token minimum at the offering. It is not a token purchase and creates no investment entitlement.</div></details>
+  <details class="faq"><summary data-en="When do tokens actually launch?" data-es="¿Cuándo se lanzan realmente los tokens?">When do tokens actually launch?</summary><div class="a" data-en="After our El Salvador license is granted and offering documents, identity verification, and signed subscriptions are complete. Timelines are estimates — the waitlist keeps you first in line." data-es="Después de que se otorgue nuestra licencia de El Salvador y se completen los documentos de oferta, la verificación de identidad y las suscripciones firmadas. Los plazos son estimados — la lista de espera te mantiene primero en la fila.">After our El Salvador license is granted and offering documents, identity verification, and signed subscriptions are complete. Timelines are estimates — the waitlist keeps you first in line.</div></details>
+  <details class="faq"><summary data-en="Who holds my tokens and money?" data-es="¿Quién custodia mis tokens y mi dinero?">Who holds my tokens and money?</summary><div class="a" data-en="Embodier.ai is the marketing and sales partner — it never holds client assets. Tokens are held by a licensed third-party custodian you designate, and committed funds sit in independent escrow." data-es="Embodier.ai es el socio de marketing y ventas — nunca mantiene activos de clientes. Los tokens los custodia un tercero licenciado que tú designas, y los fondos comprometidos están en custodia independiente.">Embodier.ai is the marketing and sales partner — it never holds client assets. Tokens are held by a licensed third-party custodian you designate, and committed funds sit in independent escrow.</div></details>
+  <details class="faq"><summary data-en="Are returns guaranteed?" data-es="¿Los retornos están garantizados?">Are returns guaranteed?</summary><div class="a" data-en="No. Nothing in the program guarantees returns, distributions, or appreciation. Digital assets are high-risk and illiquid — you may lose your entire investment. Nothing here is investment advice." data-es="No. Nada en el programa garantiza retornos, distribuciones o apreciación. Los activos digitales son de alto riesgo e ilíquidos — puedes perder la totalidad de tu inversión. Nada de esto es asesoramiento de inversión.">No. Nothing in the program guarantees returns, distributions, or appreciation. Digital assets are high-risk and illiquid — you may lose your entire investment. Nothing here is investment advice.</div></details>
+  </div>
+  <div style="text-align:center;margin-top:36px"><a class="cta" href="https://espenator.github.io/embodier-waitlist/" data-en="I WANT IN" data-es="QUIERO ENTRAR">I WANT IN</a></div>
+</section>
+</div>
+
+<footer><div class="wrap">
+  <div class="disclaimer" data-en="Embodier.ai (Espen Schiefloe) is a marketing and sales partner for the program. It does not issue tokens, hold digital assets, custody private keys, or execute trades. No tokens are currently offered for sale and no secondary trading exists; the platform is in development pending licensing in El Salvador. All figures, properties, and values shown are illustrative samples unless stated as verified. Digital assets are high-risk and illiquid; you may lose your entire investment. Nothing here is investment advice." data-es="Embodier.ai (Espen Schiefloe) es un socio de marketing y ventas del programa. No emite tokens, no mantiene activos digitales, no custodia claves privadas ni ejecuta operaciones. Actualmente no se ofrece ningún token a la venta y no existe mercado secundario; la plataforma está en desarrollo, pendiente de licencias en El Salvador. Todas las cifras, propiedades y valores mostrados son muestras ilustrativas salvo que se indique que están verificados. Los activos digitales son de alto riesgo e ilíquidos; usted puede perder la totalidad de su inversión. Nada de lo aquí contenido constituye asesoramiento de inversión.">Embodier.ai (Espen Schiefloe) is a marketing and sales partner for the program. It does not issue tokens, hold digital assets, custody private keys, or execute trades. No tokens are currently offered for sale and no secondary trading exists; the platform is in development pending licensing in El Salvador. All figures, properties, and values shown are illustrative samples unless stated as verified. Digital assets are high-risk and illiquid; you may lose your entire investment. Nothing here is investment advice.</div>
+  <div class="contact">
+    <a href="mailto:espen@embodier.ai">espen@embodier.ai</a>
+    <a href="tel:+12397775813">+1 239-777-5813</a>
+    <a href="https://www.embodier.ai">embodier.ai</a>
+  </div>
+  <div class="endline">STAY · OWN · RETURN</div>
+</div></footer>
+
+<div class="sticky-cta"><a class="cta" href="https://espenator.github.io/embodier-waitlist/" data-en="I WANT IN" data-es="QUIERO ENTRAR">I WANT IN</a></div>
+
+<script>
+function setLang(l){
+  document.documentElement.lang=l;
+  document.querySelectorAll('[data-en]').forEach(function(el){
+    el.innerHTML=el.getAttribute('data-'+l);
+  });
+  document.getElementById('btn-en').classList.toggle('on',l==='en');
+  document.getElementById('btn-es').classList.toggle('on',l==='es');
+  try{localStorage.setItem('emb-tech-lang',l)}catch(e){}
+}
+try{var s=localStorage.getItem('emb-tech-lang');if(s==='es')setLang('es')}catch(e){}
+</script>
+</body>
+</html>
