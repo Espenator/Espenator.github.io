@@ -77,7 +77,7 @@ Yield/ROI in hooks; fake live brand deals; email forms; lane mix; wrong gender c
 ## Cross-links
 
 - Notion plan: https://app.notion.com/p/3edb5aeb76078193873ec010c5026b41
-- Google Doc: https://docs.google.com/document/d/1Bak0SuPh8_2ZlH6zvrDmm2l64IVaFtWRTwEr6PUUbJs
+- Google Doc: https://docs.google.com/document/d/1m-8MzDXLuGamchYTyCbFoO-ele3lTVnu94WJ5DC1CK0
 - Docs repo: https://github.com/Espenator/embodier-project-docs/blob/master/embodier-tof-plan-2026-10-02.md
 - Notion hero (3s cuts): https://app.notion.com/p/3edb5aeb7607813abd42c18b4482c026
 - Creative Engine runbook: https://app.notion.com/p/3ebb5aeb76078181ac71dad924de2d4a
