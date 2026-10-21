@@ -2,6 +2,10 @@
 <rss version="2.0"><channel>
 <title>Embodier Journal</title><link>https://espenator.github.io/blog/</link>
 <description>Notes on tokenized real estate and boutique resorts.</description>
+<item><title>Tokenized Real Estate Debt</title>
+<link>https://espenator.github.io/blog/tokenized-real-estate-debt/</link>
+<guid>https://espenator.github.io/blog/tokenized-real-estate-debt/</guid>
+<pubDate>2026-10-21</pubDate></item>
 <item><title>Permissioned Tokens Explained Erc-3643</title>
 <link>https://espenator.github.io/blog/permissioned-tokens-explained-erc-3643/</link>
 <guid>https://espenator.github.io/blog/permissioned-tokens-explained-erc-3643/</guid>
@@ -78,8 +82,4 @@
 <link>https://espenator.github.io/blog/owning-a-piece-of-the-hotel-you-love/</link>
 <guid>https://espenator.github.io/blog/owning-a-piece-of-the-hotel-you-love/</guid>
 <pubDate>2026-10-01</pubDate></item>
-<item><title>What Happens After You Join A Token Waitlist</title>
-<link>https://espenator.github.io/blog/what-happens-after-you-join-a-token-waitlist/</link>
-<guid>https://espenator.github.io/blog/what-happens-after-you-join-a-token-waitlist/</guid>
-<pubDate>2026-09-30</pubDate></item>
 </channel></rss>
