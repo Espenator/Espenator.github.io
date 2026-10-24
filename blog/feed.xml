@@ -2,6 +2,10 @@
 <rss version="2.0"><channel>
 <title>Embodier Journal</title><link>https://espenator.github.io/blog/</link>
 <description>Notes on tokenized real estate and boutique resorts.</description>
+<item><title>Private Credit Real Estate Fund</title>
+<link>https://espenator.github.io/blog/private-credit-real-estate-fund/</link>
+<guid>https://espenator.github.io/blog/private-credit-real-estate-fund/</guid>
+<pubDate>2026-10-24</pubDate></item>
 <item><title>Tokenized Real Estate Debt</title>
 <link>https://espenator.github.io/blog/tokenized-real-estate-debt/</link>
 <guid>https://espenator.github.io/blog/tokenized-real-estate-debt/</guid>
@@ -78,8 +82,4 @@
 <link>https://espenator.github.io/blog/what-is-a-real-world-asset-token/</link>
 <guid>https://espenator.github.io/blog/what-is-a-real-world-asset-token/</guid>
 <pubDate>2026-10-04</pubDate></item>
-<item><title>How Does Tokenized Real Estate Work</title>
-<link>https://espenator.github.io/blog/how-does-tokenized-real-estate-work/</link>
-<guid>https://espenator.github.io/blog/how-does-tokenized-real-estate-work/</guid>
-<pubDate>2026-10-03</pubDate></item>
 </channel></rss>
